@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * L1.1
  * Сервлет простой динамической страницы
  *
  * @author Vladimir Shkerin
