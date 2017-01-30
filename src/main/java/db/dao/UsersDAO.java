@@ -1,6 +1,5 @@
 package db.dao;
 
-import com.sun.istack.internal.Nullable;
 import db.dataSets.UsersDataSet;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -25,7 +24,7 @@ public class UsersDAO {
         return (UsersDataSet) session.get(UsersDataSet.class, id);
     }
 
-    @Nullable
+    //    @Nullable
     public Long getUserId(String name, String password) throws HibernateException {
         Criteria criteria = session.createCriteria(UsersDataSet.class);
         criteria.add(Restrictions.eq("name", name));

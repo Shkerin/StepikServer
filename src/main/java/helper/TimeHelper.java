@@ -10,6 +10,7 @@ import java.util.Locale;
  * @author Vladimir Shkerin
  * @since 30.01.2017
  */
+@SuppressWarnings("UnusedDeclaration")
 public class TimeHelper {
 
     public static long getTimeInMs() {

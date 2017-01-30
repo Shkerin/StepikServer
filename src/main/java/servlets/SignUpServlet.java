@@ -1,10 +1,12 @@
 package servlets;
 
+import accounts.AccountServiceImpl;
 import accounts.UserProfile;
 import base.AccountService;
 import base.DBService;
 import context.Context;
 import db.DBException;
+import db.DBServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,8 +29,8 @@ public class SignUpServlet extends HttpServlet {
     private final DBService dbService;
 
     public SignUpServlet(Context context) {
-        this.accountService = (AccountService) context.get(base.AccountService.class);
-        this.dbService = (DBService) context.get(DBService.class);
+        this.accountService = (AccountService) context.get(AccountServiceImpl.class);
+        this.dbService = (DBService) context.get(DBServiceImpl.class);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package servlets;
 
+import accounts.AccountServiceImpl;
 import base.AccountService;
 import base.DBService;
 import context.Context;
 import db.DBException;
+import db.DBServiceImpl;
 import db.dataSets.UsersDataSet;
 
 import javax.servlet.ServletException;
@@ -36,8 +38,8 @@ public class SignInServlet extends HttpServlet {
     private final DBService dbService;
 
     public SignInServlet(Context context) {
-        this.accountService = (AccountService) context.get(AccountService.class);
-        this.dbService = (DBService) context.get(DBService.class);
+        this.accountService = (AccountService) context.get(AccountServiceImpl.class);
+        this.dbService = (DBService) context.get(DBServiceImpl.class);
     }
 
     @Override
