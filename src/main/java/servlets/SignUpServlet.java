@@ -43,13 +43,13 @@ public class SignUpServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
             try {
-                long id = dbService.addUser(login, pass);
-//                System.out.println("Create user \"" + login + "\" by id = " + id);
+                long id = dbService.setUser(login, pass);
+                System.out.println("Create user \"" + login + "\" by id = " + id);
             } catch (DBException e) {
                 e.printStackTrace();
             }
 
-            UserProfile profile = new UserProfile(login);
+            UserProfile profile = new UserProfile(login, pass);
             accountService.addNewUser(profile);
             accountService.addSession(request.getSession().getId(), profile);
         }

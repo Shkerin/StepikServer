@@ -20,8 +20,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // Initialization data base
         DBService dbService = new DBService();
-//        dbService.printConnectInfo();
-        dbService.createDB();
+        dbService.printConnectInfo();
 
         // Create servlets
         AccountService accountService = new AccountService();

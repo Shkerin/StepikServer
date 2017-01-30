@@ -1,59 +1,42 @@
 package db.dao;
 
 import db.dataSets.UsersDataSet;
-import db.executor.Executor;
-
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
- * DAO user
+ * DAO users
  *
  * @author Vladimir Shkerin
  * @since 29.01.2017
  */
 public class UsersDAO {
 
-    private Executor executor;
+    private Session session;
 
-    public UsersDAO(Connection connection) {
-        this.executor = new Executor(connection);
+    public UsersDAO(Session session) {
+        this.session = session;
     }
 
-    public UsersDataSet get(long id) throws SQLException {
-        String query = "SELECT * FROM users WHERE id=" + id;
-        return executor.execQuery(query, result -> {
-            result.next();
-            return new UsersDataSet(result.getLong(1), result.getString(2));
-        });
+    public UsersDataSet get(Long id) throws HibernateException {
+        return (UsersDataSet) session.get(UsersDataSet.class, id);
     }
 
-    public long getUserId(String name, String password) throws SQLException {
-        String query = "SELECT * FROM users WHERE login='" + name + "' AND password='" + password + "'";
-        return executor.execQuery(query, result -> {
-            result.next();
-            return result.getLong(1);
-        });
+    public long getUserId(String name, String password) throws HibernateException {
+        Criteria criteria = session.createCriteria(UsersDataSet.class);
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("password", password));
+        UsersDataSet dataSet = (UsersDataSet) criteria.uniqueResult();
+        if (dataSet == null) {
+            return -1;
+        }
+        return dataSet.getId();
     }
 
-    public long getUserId(String name) throws SQLException {
-        return getUserId(name, "");
-    }
-
-    public void insertUser(String name, String password) throws SQLException {
-        executor.execUpdate("INSERT INTO users (login, password) VALUES ('" + name + "', '" + password + "')");
-    }
-
-    public void insertUser(String name) throws SQLException {
-        insertUser(name, "");
-    }
-
-    public void createTable() throws SQLException {
-        executor.execUpdate("CREATE TABLE IF NOT EXISTS users (id BIGINT AUTO_INCREMENT, login VARCHAR(256), password VARCHAR(256), PRIMARY KEY (id))");
-    }
-
-    public void dropTable() throws SQLException {
-        executor.execUpdate("DROP TABLE users");
+    public long insertUser(String name, String password) {
+        return (Long) session.save(new UsersDataSet(name, password));
     }
 
 }

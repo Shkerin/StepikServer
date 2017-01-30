@@ -60,15 +60,6 @@ public class SignInServlet extends HttpServlet {
                 response.getWriter().print("Unauthorized");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
-
-//            UserProfile profile = accountService.getUserByLogin(login);
-//            if (profile == null) {
-//                response.getWriter().print("Unauthorized");
-//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            } else {
-//                response.getWriter().print("Authorized: " + profile.getLogin());
-//                response.setStatus(HttpServletResponse.SC_OK);
-//            }
         }
 
     }
