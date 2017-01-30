@@ -1,25 +1,26 @@
 package servlets;
 
 import accounts.AccountService;
-import accounts.UserProfile;
+import db.DBException;
+import db.DBService;
+import db.dataSets.UsersDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * L1.1 Сервлет проверки авторизации
- *
+ * <p>
  * При получении POST запроса на signin, после регистрации, SignInServlet проверяет,
  * логин/пароль пользователя. Если пользователь уже зарегистрирован, север отвечает:
- *
+ * <p>
  * Status code (200)
  * и текст страницы:
  * Authorized: login
- *
+ * <p>
  * если нет:
  * Status code (401)
  * текст страницы:
@@ -31,9 +32,11 @@ import java.util.Objects;
 public class SignInServlet extends HttpServlet {
 
     private final AccountService accountService;
+    private final DBService dbService;
 
-    public SignInServlet(AccountService accountService) {
+    public SignInServlet(AccountService accountService, DBService dbService) {
         this.accountService = accountService;
+        this.dbService = dbService;
     }
 
     @Override
@@ -45,19 +48,27 @@ public class SignInServlet extends HttpServlet {
         String login = request.getParameter("login");
         String pass = request.getParameter("password");
 
-//        if (login == null || pass == null) {
-        if (login == null) {
+        if (login == null || pass == null) {
             response.getWriter().print("Unauthorized");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
-            UserProfile profile = accountService.getUserByLogin(login);
-            if (profile == null) {
+            try {
+                UsersDataSet usersDataSet = dbService.getUser(login, pass);
+                response.getWriter().print("Authorized: " + usersDataSet.getName());
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (DBException e) {
                 response.getWriter().print("Unauthorized");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            } else {
-                response.getWriter().print("Authorized: " + profile.getLogin());
-                response.setStatus(HttpServletResponse.SC_OK);
             }
+
+//            UserProfile profile = accountService.getUserByLogin(login);
+//            if (profile == null) {
+//                response.getWriter().print("Unauthorized");
+//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            } else {
+//                response.getWriter().print("Authorized: " + profile.getLogin());
+//                response.setStatus(HttpServletResponse.SC_OK);
+//            }
         }
 
     }
