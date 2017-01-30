@@ -1,7 +1,10 @@
 package main;
 
-import accounts.AccountService;
-import db.DBService;
+import accounts.AccountServiceImpl;
+import base.AccountService;
+import base.DBService;
+import context.Context;
+import db.DBServiceImpl;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -18,25 +21,27 @@ import servlets.SignUpServlet;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        // Initialization context
+        Context context = new Context();
+        context.add(DBService.class, new DBServiceImpl());
+        context.add(AccountService.class, new AccountServiceImpl());
+
         // Initialization data base
-        DBService dbService = new DBService();
-        dbService.printConnectInfo();
+        ((DBService)context.get(DBService.class)).printConnectInfo();
 
         // Create servlets
-        AccountService accountService = new AccountService();
-
         AllRequestsServlet allRequestsServlet = new AllRequestsServlet();
-        SignUpServlet signUpServlet = new SignUpServlet(accountService, dbService);
-        SignInServlet signInServlet = new SignInServlet(accountService, dbService);
+        SignUpServlet signUpServlet = new SignUpServlet(context);
+        SignInServlet signInServlet = new SignInServlet(context);
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(allRequestsServlet), "/*");
-        context.addServlet(new ServletHolder(signUpServlet), "/signup");
-        context.addServlet(new ServletHolder(signInServlet), "/signin");
+        // Initialization server
+        ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        contextHandler.addServlet(new ServletHolder(allRequestsServlet), "/*");
+        contextHandler.addServlet(new ServletHolder(signUpServlet), "/signup");
+        contextHandler.addServlet(new ServletHolder(signInServlet), "/signin");
 
-        // Initialization server jetty
         Server server = new Server(8080);
-        server.setHandler(context);
+        server.setHandler(contextHandler);
 
         server.start();
         java.util.logging.Logger.getGlobal().info("Server started");

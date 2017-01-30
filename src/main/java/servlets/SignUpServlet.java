@@ -1,9 +1,10 @@
 package servlets;
 
-import accounts.AccountService;
 import accounts.UserProfile;
+import base.AccountService;
+import base.DBService;
+import context.Context;
 import db.DBException;
-import db.DBService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * L1.1 Сервлет авторизации
  * <p>
- * При получении POST запроса на signup сервлет SignUpServlet должн запомнить логин и пароль в AccountService.
+ * При получении POST запроса на signup сервлет SignUpServlet должн запомнить логин и пароль в AccountServiceImpl.
  * После этого польователь с таким логином считается зарегистрированным.
  *
  * @author Vladimir Shkerin
@@ -25,9 +26,9 @@ public class SignUpServlet extends HttpServlet {
     private final AccountService accountService;
     private final DBService dbService;
 
-    public SignUpServlet(AccountService accountService, DBService dbService) {
-        this.accountService = accountService;
-        this.dbService = dbService;
+    public SignUpServlet(Context context) {
+        this.accountService = (AccountService) context.get(base.AccountService.class);
+        this.dbService = (DBService) context.get(DBService.class);
     }
 
     @Override

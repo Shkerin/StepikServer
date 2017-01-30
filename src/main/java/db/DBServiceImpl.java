@@ -1,5 +1,6 @@
 package db;
 
+import base.DBService;
 import db.dao.UsersDAO;
 import db.dataSets.UsersDataSet;
 import org.hibernate.HibernateException;
@@ -20,15 +21,14 @@ import java.sql.SQLException;
  * @author Vladimir Shkerin
  * @since 29.01.2017
  */
-public class DBService {
-    private static final String hibernate_generate_statistics = "false";
-    private static final String hibernate_use_sql_comments = "false";
-    private static final String hibernate_show_sql = "false";
+public class DBServiceImpl implements DBService {
+
+    private static final String hibernate_show_sql = "true";
     private static final String hibernate_hbm2ddl_auto = "create";
 
     private final SessionFactory sessionFactory;
 
-    public DBService() {
+    public DBServiceImpl() {
         Configuration configuration = getMySqlConfiguration();
         this.sessionFactory = createSessionFactory(configuration);
     }
@@ -42,8 +42,6 @@ public class DBService {
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/db_example");
         configuration.setProperty("hibernate.connection.username", "vlad");
         configuration.setProperty("hibernate.connection.password", "vlad");
-        configuration.setProperty("hibernate.generate_statistics", hibernate_generate_statistics);
-        configuration.setProperty("hibernate.use_sql_comments", hibernate_use_sql_comments);
         configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
         configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
         return configuration;
@@ -87,8 +85,8 @@ public class DBService {
         try {
             Session session = sessionFactory.openSession();
             UsersDAO dao = new UsersDAO(session);
-            long id = dao.getUserId(name, password);
-            if (id == -1) {
+            Long id = dao.getUserId(name, password);
+            if (id == null) {
                 throw new HibernateException("User not found DB");
             }
             UsersDataSet dataSet = dao.get(id);
