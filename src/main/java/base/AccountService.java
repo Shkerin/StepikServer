@@ -14,4 +14,10 @@ public interface AccountService {
 
     void addSession(String id, UserProfile profile);
 
+    UserProfile getUserByLogin(String login);
+
+    UserProfile getUserBySessionId(String sessionId);
+
+    void deleteSession(String sessionId);
+
 }
