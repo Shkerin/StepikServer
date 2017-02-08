@@ -39,10 +39,10 @@ public class Main {
 
         // Initialization server
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        contextHandler.addServlet(new ServletHolder(allRequestsServlet), "/*");
-        contextHandler.addServlet(new ServletHolder(signUpServlet), "/signup");
-        contextHandler.addServlet(new ServletHolder(signInServlet), "/signin");
-        contextHandler.addServlet(new ServletHolder(chatServlet), "/chat");
+        contextHandler.addServlet(new ServletHolder(allRequestsServlet), AllRequestsServlet.PAGE_URL);
+        contextHandler.addServlet(new ServletHolder(signUpServlet), SignUpServlet.PAGE_URL);
+        contextHandler.addServlet(new ServletHolder(signInServlet), SignInServlet.PAGE_URL);
+        contextHandler.addServlet(new ServletHolder(chatServlet), WebSocketChatServlet.PAGE_URL);
 
         Server server = new Server(8080);
         server.setHandler(contextHandler);

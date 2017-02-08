@@ -15,6 +15,8 @@ import java.io.IOException;
  */
 public class AllRequestsServlet extends HttpServlet {
 
+    public static final String PAGE_URL = "/*";
+
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
 

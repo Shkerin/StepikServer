@@ -18,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(name = "WebSocketChatServlet", urlPatterns = {"/chat"})
 public class WebSocketChatServlet extends WebSocketServlet {
 
+    public static final String PAGE_URL = "/chat";
+
     private final static int LOGOUT_TIME = 10 * 60 * 1000;
     private final ChatService chatService;
 

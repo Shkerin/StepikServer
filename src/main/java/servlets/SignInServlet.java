@@ -34,6 +34,8 @@ import java.io.IOException;
  */
 public class SignInServlet extends HttpServlet {
 
+    public static final String PAGE_URL = "/signin";
+
     private final AccountService accountService;
     private final DBService dbService;
 

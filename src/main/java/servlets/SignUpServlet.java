@@ -25,6 +25,8 @@ import java.io.IOException;
  */
 public class SignUpServlet extends HttpServlet {
 
+    public static final String PAGE_URL = "/signup";
+
     private final AccountService accountService;
     private final DBService dbService;
 
