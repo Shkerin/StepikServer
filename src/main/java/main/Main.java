@@ -1,5 +1,9 @@
 package main;
 
+import base.AccountServer;
+import accountServer.AccountServerController;
+import accountServer.AccountServerControllerMBean;
+import accountServer.AccountServerImpl;
 import accounts.AccountServiceImpl;
 import base.DBService;
 import chat.ChatServiceImpl;
@@ -8,10 +12,11 @@ import db.DBServiceImpl;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.AllRequestsServlet;
-import servlets.SignInServlet;
-import servlets.SignUpServlet;
-import servlets.WebSocketChatServlet;
+import servlets.*;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 
 /**
  * Основной класс
@@ -31,11 +36,20 @@ public class Main {
         // Initialization data base
         ((DBService) context.get(DBServiceImpl.class)).printConnectInfo();
 
+        AccountServer accountServer = new AccountServerImpl(10);
+
+        // Initialization bean controller
+        AccountServerControllerMBean serverStatistics = new AccountServerController(accountServer);
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name = new ObjectName("Admin:type=AccountServerController.usersLimit");
+        mbs.registerMBean(serverStatistics, name);
+
         // Create servlets
         AllRequestsServlet allRequestsServlet = new AllRequestsServlet();
         SignUpServlet signUpServlet = new SignUpServlet(context);
         SignInServlet signInServlet = new SignInServlet(context);
         WebSocketChatServlet chatServlet = new WebSocketChatServlet(context);
+        AccountServerServlet accountServerServlet = new AccountServerServlet(accountServer);
 
         // Initialization server
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -43,6 +57,7 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(signUpServlet), SignUpServlet.PAGE_URL);
         contextHandler.addServlet(new ServletHolder(signInServlet), SignInServlet.PAGE_URL);
         contextHandler.addServlet(new ServletHolder(chatServlet), WebSocketChatServlet.PAGE_URL);
+        contextHandler.addServlet(new ServletHolder(accountServerServlet), AccountServerServlet.PAGE_URL);
 
         Server server = new Server(8080);
         server.setHandler(contextHandler);

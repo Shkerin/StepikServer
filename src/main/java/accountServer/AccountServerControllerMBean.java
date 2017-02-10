@@ -1,4 +1,4 @@
-package base;
+package accountServer;
 
 /**
  * Bean for account server

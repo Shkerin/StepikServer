@@ -1,7 +1,6 @@
-package accounts;
+package accountServer;
 
 import base.AccountServer;
-import base.AccountServerControllerMBean;
 
 /**
  * Controller account server
