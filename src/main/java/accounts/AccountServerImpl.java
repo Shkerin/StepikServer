@@ -29,17 +29,17 @@ public class AccountServerImpl implements AccountServer {
     }
 
     @Override
-    public int getUserLimit() {
+    public int getUsersLimit() {
         return userLimit;
     }
 
     @Override
-    public void setUserLimit(int userLimit) {
+    public void setUsersLimit(int userLimit) {
         this.userLimit = userLimit;
     }
 
     @Override
-    public int getUserCount() {
+    public int getUsersCount() {
         return userCount;
     }
 

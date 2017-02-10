@@ -12,10 +12,10 @@ public interface AccountServer {
 
     void removeUser();
 
-    int getUserLimit();
+    int getUsersLimit();
 
-    void setUserLimit(int userLimit);
+    void setUsersLimit(int userLimit);
 
-    int getUserCount();
+    int getUsersCount();
 
 }
