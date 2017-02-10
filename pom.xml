@@ -49,6 +49,8 @@
         <com.h2database.h2.version>1.4.187</com.h2database.h2.version>
         <mysql.mysql-connector-java.version>5.1.35</mysql.mysql-connector-java.version>
         <org.hibernate.hibernate-core.version>4.3.10.Final</org.hibernate.hibernate-core.version>
+        <org.testng>6.10</org.testng>
+        <org.mockito>1.10.19</org.mockito>
     </properties>
 
     <dependencies>
@@ -98,13 +100,13 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.10</version>
+            <version>${org.testng}</version>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <version>${org.mockito}</version>
         </dependency>
 
     </dependencies>
