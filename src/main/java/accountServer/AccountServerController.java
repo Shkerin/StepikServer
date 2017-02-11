@@ -1,6 +1,7 @@
 package accountServer;
 
 import base.AccountServer;
+import context.Context;
 
 /**
  * Controller account server
@@ -11,8 +12,8 @@ import base.AccountServer;
 public class AccountServerController implements AccountServerControllerMBean {
     private final AccountServer accountServer;
 
-    public AccountServerController(AccountServer accountServer) {
-        this.accountServer = accountServer;
+    public AccountServerController(Context context) {
+        this.accountServer = (AccountServer) context.get(AccountServerImpl.class);
     }
 
     @Override

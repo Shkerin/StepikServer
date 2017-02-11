@@ -1,6 +1,8 @@
 package servlets;
 
+import accountServer.AccountServerImpl;
 import base.AccountServer;
+import context.Context;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +21,8 @@ public class AccountServerServlet extends HttpServlet {
     public static final String PAGE_URL = "/home";
     private AccountServer accountServer;
 
-    public AccountServerServlet(AccountServer accountServer) {
-        this.accountServer = accountServer;
+    public AccountServerServlet(Context context) {
+        this.accountServer = (AccountServer) context.get(AccountServerImpl.class);
     }
 
     @Override
